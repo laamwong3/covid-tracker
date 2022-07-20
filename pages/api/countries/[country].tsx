@@ -16,5 +16,9 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<CountryData>
 ) {
-  // res.status(200).json({ name: "John Doe" });
+  const url = `https://covid19.mathdro.id/api/countries/${req.query.country}`;
+  fetch(url)
+    .then((res) => res.json())
+    .then((data: CountryData) => res.status(200).json(data))
+    .catch((e) => console.log(e));
 }
