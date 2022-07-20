@@ -11,28 +11,44 @@ export default function CountrySelect() {
   const { data } = useSWR<CountryDetail>("/api/countries", fetcher);
 
   const [countries, setCountries] = useState<Country[]>([]);
+  const [currentOption, setCurrentOption] = useState({} as Country);
 
   useEffect(() => {
     if (data?.countries) {
       setCountries([
-        ...data.countries,
         { name: "Global", iso2: "Global", iso3: "Global" },
+        ...data.countries,
       ]);
     }
   }, [data]);
 
-  // console.log(first);
+  useEffect(() => {
+    if (countries) {
+      setCurrentOption(countries[0]);
+    }
+  }, [countries]);
+
+  console.log(currentOption);
 
   return (
-    <Autocomplete
-      id="country-select-demo"
-      sx={{ width: "60%" }}
-      options={data?.countries ?? []}
-      autoHighlight
-      getOptionLabel={(option) => option.name ?? ""}
-      renderInput={(params) => (
-        <TextField {...params} label="Choose a country" />
+    <>
+      {countries && currentOption && (
+        <Autocomplete
+          sx={{ width: "60%" }}
+          options={countries}
+          value={currentOption}
+          onChange={(event, newValue) => {
+            if (newValue) {
+              setCurrentOption(newValue);
+            }
+          }}
+          autoHighlight
+          getOptionLabel={(option) => option.name ?? ""}
+          renderInput={(params) => (
+            <TextField {...params} label="Choose a country" />
+          )}
+        />
       )}
-    />
+    </>
   );
 }
