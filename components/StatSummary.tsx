@@ -10,6 +10,7 @@ const StatSummary = () => {
       direction="row"
       justifyContent="center"
       alignItems="center"
+      width="100%"
     >
       <Grid item>
         <CardDetail />

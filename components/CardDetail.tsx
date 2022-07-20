@@ -18,20 +18,9 @@ const bull = (
 const card = (
   <React.Fragment>
     <CardContent>
-      <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-        Word of the Day
-      </Typography>
-      <Typography variant="h5" component="div">
-        be{bull}nev{bull}o{bull}lent
-      </Typography>
-      <Typography sx={{ mb: 1.5 }} color="text.secondary">
-        adjective
-      </Typography>
-      <Typography variant="body2">
-        well meaning and kindly.
-        <br />
-        {'"a benevolent smile"'}
-      </Typography>
+      <Typography>Infected</Typography>
+      <Typography variant="h5">number</Typography>
+      <Typography>last updated</Typography>
     </CardContent>
     <CardActions sx={{ backgroundColor: "red" }} />
   </React.Fragment>

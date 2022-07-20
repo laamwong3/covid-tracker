@@ -1,4 +1,4 @@
-import { Stack, Container } from "@mui/material";
+import { Stack, Container, Box } from "@mui/material";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -12,12 +12,13 @@ import {
 const Home: NextPage = () => {
   return (
     <>
-      <Container maxWidth="xl">
+      <Container maxWidth="lg">
         <Stack
-          gap={5}
+          gap={3}
           direction="column"
           justifyContent="center"
           alignItems="center"
+          mt={2}
         >
           <MainTitle />
           <StatSummary />

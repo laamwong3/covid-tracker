@@ -34,7 +34,7 @@ export default function CountrySelect() {
     <>
       {countries && currentOption && (
         <Autocomplete
-          sx={{ width: "60%" }}
+          sx={{ width: "100%" }}
           options={countries}
           value={currentOption}
           onChange={(event, newValue) => {
