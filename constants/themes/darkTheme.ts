@@ -3,6 +3,9 @@ import { red } from "@mui/material/colors";
 
 // Create a theme instance.
 let darkTheme = createTheme({
+  typography: {
+    fontFamily: "Montserrat",
+  },
   palette: {
     mode: "dark",
     primary: {
@@ -14,6 +17,7 @@ let darkTheme = createTheme({
     error: {
       main: red.A400,
     },
+    background: { default: "#001a33" },
   },
 });
 
