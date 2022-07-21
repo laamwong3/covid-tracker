@@ -22,8 +22,9 @@ const StatSummary = () => {
     { status: "Recovered", statusColor: "green" },
     { status: "Deaths", statusColor: "red" },
   ];
-  const [summary, setSummary] = useState<SummaryDetail[]>();
-  const { currentOption } = useStateAPI();
+  const [summary, setSummary] = useState<SummaryDetail[]>([]);
+  const { currentOption, setCountryGraphData, setGlobalGraphData } =
+    useStateAPI();
 
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
   const { data: globalData } = useSWR<GlobalData[]>(
@@ -49,7 +50,8 @@ const StatSummary = () => {
           }
           if (each.status === "Recovered") {
             each.statusNumber =
-              globalData[globalData.length - 1].totalRecovered;
+              Number(globalData[globalData.length - 1].totalConfirmed) -
+              Number(globalData[globalData.length - 1].deaths?.total);
             each.lastUpdated = globalData[globalData.length - 1].reportDate;
           }
           if (each.status === "Deaths") {
@@ -58,6 +60,7 @@ const StatSummary = () => {
           }
         });
         setSummary(status);
+        setGlobalGraphData(globalData);
       }
     } else {
       if (countryData) {
@@ -67,7 +70,9 @@ const StatSummary = () => {
             each.lastUpdated = countryData.lastUpdate;
           }
           if (each.status === "Recovered") {
-            each.statusNumber = countryData.recovered?.value;
+            each.statusNumber =
+              Number(countryData.confirmed?.value) -
+              Number(countryData.deaths?.value);
             each.lastUpdated = countryData.lastUpdate;
           }
           if (each.status === "Deaths") {
@@ -76,12 +81,11 @@ const StatSummary = () => {
           }
         });
         setSummary(status);
+        setCountryGraphData(countryData);
       }
     }
   }, [countryData, globalData, currentOption]);
-  console.log(globalData);
-  console.log(countryData);
-  // console.log(summary);
+
   return (
     <Grid
       gap={5}
@@ -97,15 +101,6 @@ const StatSummary = () => {
             <CardDetail details={details} />
           </Grid>
         ))}
-      {/* <Grid item>
-        <CardDetail />
-      </Grid>
-      <Grid item>
-        <CardDetail />
-      </Grid>
-      <Grid item>
-        <CardDetail />
-      </Grid> */}
     </Grid>
   );
 };

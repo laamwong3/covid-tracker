@@ -6,26 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { SummaryDetail } from "./StatSummary";
-
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
-  >
-    •
-  </Box>
-);
-
-const card = (
-  <React.Fragment>
-    <CardContent>
-      <Typography>Infected</Typography>
-      <Typography variant="h5">number</Typography>
-      <Typography>last updated</Typography>
-    </CardContent>
-    <CardActions sx={{ backgroundColor: "red" }} />
-  </React.Fragment>
-);
+import CountUp from "react-countup";
 
 interface CardDetailProp {
   details: SummaryDetail;
@@ -44,10 +25,10 @@ export default function CardDetail({ details }: CardDetailProp) {
             {details.status}
           </Typography>
           <Typography textAlign="center" variant="h5">
-            {details.statusNumber}
+            <CountUp end={details.statusNumber ?? 0} duration={3} />
           </Typography>
           <Typography textAlign="center">
-            Last Updated {new Date(details.lastUpdated!).toLocaleString()}
+            Last Updated {new Date(details.lastUpdated!).toLocaleDateString()}
           </Typography>
         </CardContent>
         <CardActions sx={{ backgroundColor: details.statusColor }} />
