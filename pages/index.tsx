@@ -18,7 +18,7 @@ const Home: NextPage = () => {
           direction="column"
           justifyContent="center"
           alignItems="center"
-          mt={2}
+          mt={1}
         >
           <MainTitle />
           <StatSummary />

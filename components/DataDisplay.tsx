@@ -58,7 +58,7 @@ export const data = {
 export default function DataDisplay() {
   return (
     <>
-      <Box width="100%">
+      <Box width="70%">
         <Line options={options} data={data} />
       </Box>
     </>
