@@ -47,7 +47,7 @@ export default function CardDetail({ details }: CardDetailProp) {
             {details.statusNumber}
           </Typography>
           <Typography textAlign="center">
-            Last Updated {details.lastUpdated?.toString()}
+            Last Updated {new Date(details.lastUpdated!).toLocaleString()}
           </Typography>
         </CardContent>
         <CardActions sx={{ backgroundColor: details.statusColor }} />

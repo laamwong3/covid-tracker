@@ -26,37 +26,62 @@ const StatSummary = () => {
   const { currentOption } = useStateAPI();
 
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
-  const { data: globalData } = useSWR<GlobalData[]>("/api/daily", fetcher);
-  const { data: countryData } = useSWR<CountryData[]>(
+  const { data: globalData } = useSWR<GlobalData[]>(
+    () => (currentOption?.name === "Global" ? "/api/daily" : null),
+    fetcher
+  );
+  const { data: countryData } = useSWR<CountryData>(
     () =>
-      currentOption?.name === "Global"
-        ? null
-        : `/api/countries/${currentOption?.iso3}`,
+      currentOption?.name !== "Global"
+        ? `/api/countries/${currentOption?.iso3}`
+        : null,
     fetcher
   );
 
   useEffect(() => {
-    if (globalData) {
-      status.map((each) => {
-        if (each.status === "Infected") {
-          each.statusNumber = globalData[globalData.length - 1].totalConfirmed;
-          each.lastUpdated = globalData[globalData.length - 1].reportDate;
-        }
-        if (each.status === "Recovered") {
-          each.statusNumber = globalData[globalData.length - 1].totalRecovered;
-          each.lastUpdated = globalData[globalData.length - 1].reportDate;
-        }
-        if (each.status === "Deaths") {
-          each.statusNumber = globalData[globalData.length - 1].deaths?.total;
-          each.lastUpdated = globalData[globalData.length - 1].reportDate;
-        }
-      });
-      setSummary(status);
+    if (currentOption?.name === "Global") {
+      if (globalData) {
+        status.map((each) => {
+          if (each.status === "Infected") {
+            each.statusNumber =
+              globalData[globalData.length - 1].totalConfirmed;
+            each.lastUpdated = globalData[globalData.length - 1].reportDate;
+          }
+          if (each.status === "Recovered") {
+            each.statusNumber =
+              globalData[globalData.length - 1].totalRecovered;
+            each.lastUpdated = globalData[globalData.length - 1].reportDate;
+          }
+          if (each.status === "Deaths") {
+            each.statusNumber = globalData[globalData.length - 1].deaths?.total;
+            each.lastUpdated = globalData[globalData.length - 1].reportDate;
+          }
+        });
+        setSummary(status);
+      }
+    } else {
+      if (countryData) {
+        status.map((each) => {
+          if (each.status === "Infected") {
+            each.statusNumber = countryData.confirmed?.value;
+            each.lastUpdated = countryData.lastUpdate;
+          }
+          if (each.status === "Recovered") {
+            each.statusNumber = countryData.recovered?.value;
+            each.lastUpdated = countryData.lastUpdate;
+          }
+          if (each.status === "Deaths") {
+            each.statusNumber = countryData.deaths?.value;
+            each.lastUpdated = countryData.lastUpdate;
+          }
+        });
+        setSummary(status);
+      }
     }
-  }, [globalData]);
-  //console.log(globalData);
-  // console.log(countryData);
-  console.log(summary);
+  }, [countryData, globalData, currentOption]);
+  console.log(globalData);
+  console.log(countryData);
+  // console.log(summary);
   return (
     <Grid
       gap={5}
